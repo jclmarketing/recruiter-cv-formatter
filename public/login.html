@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV Rebrander — Login</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #232730;
+    --border: #2e3340;
+    --text: #e4e7ec;
+    --text-muted: #8b8fa3;
+    --accent: #6c5ce7;
+    --accent-light: #a29bfe;
+    --error: #ff5252;
+    --error-bg: rgba(255,82,82,0.08);
+    --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+
+  .login-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 40px; width: 100%; max-width: 400px; }
+  .login-header { text-align: center; margin-bottom: 28px; }
+  .login-header .logo-icon { width: 48px; height: 48px; background: linear-gradient(135deg, var(--accent), var(--accent-light)); border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; font-size: 22px; color: white; margin-bottom: 12px; }
+  .login-header h1 { font-size: 20px; font-weight: 700; }
+  .login-header p { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600; }
+  input[type="email"], input[type="password"] {
+    width: 100%; padding: 12px 14px;
+    background: var(--surface2); color: var(--text);
+    border: 1px solid var(--border); border-radius: 8px;
+    font-size: 14px; font-family: inherit; outline: none; transition: border-color 0.2s;
+  }
+  input:focus { border-color: var(--accent); }
+
+  .btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; font-family: inherit; width: 100%; background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: white; margin-top: 8px; }
+  .btn:hover:not(:disabled) { opacity: 0.9; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .error-msg { background: var(--error-bg); border: 1px solid rgba(255,82,82,0.3); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--error); margin-top: 12px; display: none; }
+  .error-msg.visible { display: block; }
+
+  .spinner-sm { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div class="login-card">
+  <div class="login-header">
+    <div class="logo-icon">CV</div>
+    <h1>CV Rebrander</h1>
+    <p>Sign in to access settings</p>
+  </div>
+
+  <form id="loginForm">
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" required autofocus>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" required>
+    </div>
+    <button type="submit" id="btnLogin" class="btn">Sign In</button>
+    <div id="errorMsg" class="error-msg"></div>
+  </form>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://srv1581646.hstgr.cloud';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzc2MDEyMjUzLCJleHAiOjIwOTEzNzIyNTN9.g1QzpSerMck6NmuKEKxoa_IE9ePcS-kmWCIgSerHyZc';
+
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const btn = document.getElementById('btnLogin');
+  const errorMsg = document.getElementById('errorMsg');
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-sm"></span> Signing in...';
+  errorMsg.className = 'error-msg';
+
+  try {
+    const resp = await fetch(SUPABASE_URL + '/auth/v1/token?grant_type=password', {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_ANON_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await resp.json();
+
+    if (!resp.ok || !data.access_token) {
+      throw new Error(data.error_description || data.msg || 'Invalid credentials');
+    }
+
+    // Store session
+    localStorage.setItem('cvr_access_token', data.access_token);
+    localStorage.setItem('cvr_refresh_token', data.refresh_token);
+    localStorage.setItem('cvr_user_email', data.user?.email || email);
+    localStorage.setItem('cvr_token_expires', Date.now() + (data.expires_in * 1000));
+
+    // Redirect to settings
+    const redirect = new URLSearchParams(window.location.search).get('redirect') || '/settings.html';
+    window.location.href = redirect;
+  } catch (err) {
+    errorMsg.textContent = err.message;
+    errorMsg.className = 'error-msg visible';
+    btn.disabled = false;
+    btn.textContent = 'Sign In';
+  }
+});
+
+// If already logged in, redirect
+const token = localStorage.getItem('cvr_access_token');
+const expires = parseInt(localStorage.getItem('cvr_token_expires') || '0');
+if (token && Date.now() < expires) {
+  const redirect = new URLSearchParams(window.location.search).get('redirect') || '/settings.html';
+  window.location.href = redirect;
+}
+</script>
+</body>
+</html>

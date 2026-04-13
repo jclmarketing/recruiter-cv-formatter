@@ -26,10 +26,13 @@
   .topbar { display: flex; align-items: center; justify-content: space-between; padding: 16px 32px; background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
   .topbar .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; }
   .topbar .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--accent), var(--accent-light)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; color: white; }
-  .topbar .nav-links { display: flex; gap: 12px; }
+  .topbar .nav-links { display: flex; gap: 12px; align-items: center; }
   .topbar .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 13px; padding: 6px 14px; border-radius: 6px; border: 1px solid var(--border); transition: all 0.2s; }
   .topbar .nav-links a:hover { border-color: var(--accent); color: var(--text); }
   .topbar .nav-links a.active { background: var(--accent); color: white; border-color: var(--accent); }
+  .user-badge { font-size: 12px; color: var(--text-muted); margin-left: 8px; }
+  .btn-logout { background: none; border: 1px solid var(--border); color: var(--text-muted); font-size: 12px; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-family: inherit; margin-left: 4px; }
+  .btn-logout:hover { border-color: var(--error); color: var(--error); }
 
   .container { max-width: 640px; margin: 0 auto; padding: 24px 32px; }
 
@@ -46,7 +49,7 @@
   .form-group label { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600; }
   .form-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
 
-  input[type="password"], input[type="text"] {
+  input[type="password"] {
     width: 100%; padding: 10px 14px;
     background: var(--surface2); color: var(--text);
     border: 1px solid var(--border); border-radius: 8px;
@@ -84,6 +87,8 @@
     <a href="/">Generator</a>
     <a href="/setup.html">Setup</a>
     <a href="/settings.html" class="active">Settings</a>
+    <span class="user-badge" id="userBadge"></span>
+    <button class="btn-logout" id="btnLogout">Logout</button>
   </div>
 </div>
 
@@ -103,17 +108,6 @@
     </div>
   </div>
 
-  <div class="panel">
-    <div class="panel-title"><span class="icon">&#127908;</span> ElevenLabs</div>
-    <div class="panel-sub">Optional. For future voice features.</div>
-    <div class="form-group">
-      <label for="elevenlabsKey">API Key</label>
-      <input type="password" id="elevenlabsKey" placeholder="xi-...">
-      <div class="form-hint">Get your key from <a href="https://elevenlabs.io/app/settings/api-keys" target="_blank" style="color:var(--accent-light);">elevenlabs.io</a></div>
-      <div class="key-status" id="elevenlabsStatus"></div>
-    </div>
-  </div>
-
   <button type="button" id="btnSave" class="btn btn-primary">Save API Keys</button>
   <div id="saveStatus" class="status-msg" style="margin-bottom:40px;"></div>
 
@@ -124,10 +118,42 @@ const SUPABASE_URL = 'https://srv1581646.hstgr.cloud';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzc2MDEyMjUzLCJleHAiOjIwOTEzNzIyNTN9.g1QzpSerMck6NmuKEKxoa_IE9ePcS-kmWCIgSerHyZc';
 const SCHEMA = 't_cv_formatter';
 
+// Auth guard — redirect to login if not authenticated
+function getAccessToken() {
+  const token = localStorage.getItem('cvr_access_token');
+  const expires = parseInt(localStorage.getItem('cvr_token_expires') || '0');
+  if (!token || Date.now() >= expires) return null;
+  return token;
+}
+
+const accessToken = getAccessToken();
+if (!accessToken) {
+  window.location.href = '/login.html?redirect=/settings.html';
+}
+
+// Show user email + logout
+document.getElementById('userBadge').textContent = localStorage.getItem('cvr_user_email') || '';
+document.getElementById('btnLogout').addEventListener('click', () => {
+  localStorage.removeItem('cvr_access_token');
+  localStorage.removeItem('cvr_refresh_token');
+  localStorage.removeItem('cvr_user_email');
+  localStorage.removeItem('cvr_token_expires');
+  window.location.href = '/login.html';
+});
+
 async function fetchSettings() {
   const resp = await fetch(SUPABASE_URL + '/rest/v1/settings?select=key,value', {
-    headers: { 'apikey': SUPABASE_ANON_KEY, 'Accept-Profile': SCHEMA },
+    headers: {
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': 'Bearer ' + accessToken,
+      'Accept-Profile': SCHEMA,
+    },
   });
+  if (resp.status === 401 || resp.status === 403) {
+    localStorage.removeItem('cvr_access_token');
+    window.location.href = '/login.html?redirect=/settings.html';
+    return {};
+  }
   if (!resp.ok) return {};
   const rows = await resp.json();
   const map = {};
@@ -140,7 +166,7 @@ async function upsertSetting(key, value, label) {
     method: 'POST',
     headers: {
       'apikey': SUPABASE_ANON_KEY,
-      'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+      'Authorization': 'Bearer ' + accessToken,
       'Content-Type': 'application/json',
       'Content-Profile': SCHEMA,
       'Accept-Profile': SCHEMA,
@@ -152,10 +178,10 @@ async function upsertSetting(key, value, label) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  if (!accessToken) return;
+
   const openaiKey = document.getElementById('openaiKey');
-  const elevenlabsKey = document.getElementById('elevenlabsKey');
   const openaiStatus = document.getElementById('openaiStatus');
-  const elevenlabsStatus = document.getElementById('elevenlabsStatus');
   const btnSave = document.getElementById('btnSave');
   const saveStatus = document.getElementById('saveStatus');
 
@@ -169,42 +195,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // Load existing keys
   try {
     const settings = await fetchSettings();
-    if (settings.openai_api_key) {
-      openaiKey.value = settings.openai_api_key;
-    }
-    if (settings.elevenlabs_api_key) {
-      elevenlabsKey.value = settings.elevenlabs_api_key;
-    }
+    if (settings.openai_api_key) openaiKey.value = settings.openai_api_key;
     showKeyStatus(openaiStatus, !!settings.openai_api_key);
-    showKeyStatus(elevenlabsStatus, !!settings.elevenlabs_api_key);
   } catch {
     showKeyStatus(openaiStatus, false);
-    showKeyStatus(elevenlabsStatus, false);
   }
 
-  // Save
   btnSave.addEventListener('click', async () => {
     btnSave.disabled = true;
     btnSave.innerHTML = '<span class="spinner-sm"></span> Saving...';
     saveStatus.className = 'status-msg'; saveStatus.style.display = 'none';
 
     try {
-      const promises = [];
       if (openaiKey.value.trim()) {
-        promises.push(upsertSetting('openai_api_key', openaiKey.value.trim(), 'OpenAI API Key'));
+        await upsertSetting('openai_api_key', openaiKey.value.trim(), 'OpenAI API Key');
       }
-      if (elevenlabsKey.value.trim()) {
-        promises.push(upsertSetting('elevenlabs_api_key', elevenlabsKey.value.trim(), 'ElevenLabs API Key'));
-      }
-      await Promise.all(promises);
-
       showKeyStatus(openaiStatus, !!openaiKey.value.trim());
-      showKeyStatus(elevenlabsStatus, !!elevenlabsKey.value.trim());
-
-      saveStatus.textContent = 'API keys saved successfully!';
+      saveStatus.textContent = 'API key saved successfully!';
       saveStatus.className = 'status-msg success';
       saveStatus.style.display = 'block';
     } catch (err) {
