@@ -9,6 +9,7 @@ const { extract } = require('../lib/extractor');
 const { parseCV } = require('../lib/parser');
 const { generateDocx } = require('../lib/generator-docx');
 const { generatePdf } = require('../lib/generator-pdf');
+const { getSetting } = require('../lib/supabase');
 
 // Disable Vercel's built-in body parser for multipart
 module.exports.config = {
@@ -71,7 +72,14 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'Could not extract meaningful text from the CV.' });
     }
 
-    // Step 2: Parse with AI
+    // Step 2: Fetch OpenAI key from Supabase and parse with AI
+    console.log(`[${jobId}] Fetching OpenAI key...`);
+    const openaiKey = await getSetting('openai_api_key');
+    if (!openaiKey) {
+      return res.status(400).json({ error: 'OpenAI API key not configured. Go to Settings to add it.' });
+    }
+    process.env.OPENAI_API_KEY = openaiKey;
+
     console.log(`[${jobId}] Parsing CV with AI...`);
     const cvData = await parseCV(rawText);
 

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV Rebrander — Settings</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #232730;
+    --border: #2e3340;
+    --text: #e4e7ec;
+    --text-muted: #8b8fa3;
+    --accent: #6c5ce7;
+    --accent-light: #a29bfe;
+    --success: #00c853;
+    --success-bg: rgba(0,200,83,0.08);
+    --error: #ff5252;
+    --error-bg: rgba(255,82,82,0.08);
+    --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.5; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; padding: 16px 32px; background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+  .topbar .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; }
+  .topbar .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--accent), var(--accent-light)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; color: white; }
+  .topbar .nav-links { display: flex; gap: 12px; }
+  .topbar .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 13px; padding: 6px 14px; border-radius: 6px; border: 1px solid var(--border); transition: all 0.2s; }
+  .topbar .nav-links a:hover { border-color: var(--accent); color: var(--text); }
+  .topbar .nav-links a.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+  .container { max-width: 640px; margin: 0 auto; padding: 24px 32px; }
+
+  .page-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .page-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; }
+  .panel-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+  .panel-title .icon { font-size: 18px; }
+  .panel-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; }
+
+  .form-group { margin-bottom: 16px; }
+  .form-group:last-child { margin-bottom: 0; }
+  .form-group label { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600; }
+  .form-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+  input[type="password"], input[type="text"] {
+    width: 100%; padding: 10px 14px;
+    background: var(--surface2); color: var(--text);
+    border: 1px solid var(--border); border-radius: 8px;
+    font-size: 13px; font-family: monospace; outline: none; transition: border-color 0.2s;
+  }
+  input:focus { border-color: var(--accent); }
+
+  .key-status { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; margin-top: 6px; }
+  .key-status.configured { color: var(--success); }
+  .key-status.missing { color: var(--text-muted); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .dot.green { background: var(--success); }
+  .dot.grey { background: var(--text-muted); }
+
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; font-family: inherit; width: 100%; justify-content: center; }
+  .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: white; }
+  .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .status-msg { padding: 10px 16px; border-radius: 8px; font-size: 13px; margin-top: 12px; display: none; }
+  .status-msg.success { display: block; background: var(--success-bg); color: var(--success); border: 1px solid rgba(0,200,83,0.3); }
+  .status-msg.error { display: block; background: var(--error-bg); color: var(--error); border: 1px solid rgba(255,82,82,0.3); }
+
+  .spinner-sm { display: inline-block; width: 14px; height: 14px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 600px) { .topbar { padding: 12px 16px; } .container { padding: 16px; } }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo"><div class="logo-icon">CV</div><span>CV Rebrander</span></div>
+  <div class="nav-links">
+    <a href="/">Generator</a>
+    <a href="/setup.html">Setup</a>
+    <a href="/settings.html" class="active">Settings</a>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="page-title">API Settings</div>
+  <div class="page-sub">Manage your API keys. These are stored securely in the database and used server-side only.</div>
+
+  <div class="panel">
+    <div class="panel-title"><span class="icon">&#129302;</span> OpenAI</div>
+    <div class="panel-sub">Required for CV parsing. Uses GPT-4o-mini to extract and structure candidate data.</div>
+    <div class="form-group">
+      <label for="openaiKey">API Key</label>
+      <input type="password" id="openaiKey" placeholder="sk-...">
+      <div class="form-hint">Get your key from <a href="https://platform.openai.com/api-keys" target="_blank" style="color:var(--accent-light);">platform.openai.com</a></div>
+      <div class="key-status" id="openaiStatus"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title"><span class="icon">&#127908;</span> ElevenLabs</div>
+    <div class="panel-sub">Optional. For future voice features.</div>
+    <div class="form-group">
+      <label for="elevenlabsKey">API Key</label>
+      <input type="password" id="elevenlabsKey" placeholder="xi-...">
+      <div class="form-hint">Get your key from <a href="https://elevenlabs.io/app/settings/api-keys" target="_blank" style="color:var(--accent-light);">elevenlabs.io</a></div>
+      <div class="key-status" id="elevenlabsStatus"></div>
+    </div>
+  </div>
+
+  <button type="button" id="btnSave" class="btn btn-primary">Save API Keys</button>
+  <div id="saveStatus" class="status-msg" style="margin-bottom:40px;"></div>
+
+</div>
+
+<script>
+const SUPABASE_URL = 'https://srv1581646.hstgr.cloud';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzc2MDEyMjUzLCJleHAiOjIwOTEzNzIyNTN9.g1QzpSerMck6NmuKEKxoa_IE9ePcS-kmWCIgSerHyZc';
+const SCHEMA = 't_cv_formatter';
+
+async function fetchSettings() {
+  const resp = await fetch(SUPABASE_URL + '/rest/v1/settings?select=key,value', {
+    headers: { 'apikey': SUPABASE_ANON_KEY, 'Accept-Profile': SCHEMA },
+  });
+  if (!resp.ok) return {};
+  const rows = await resp.json();
+  const map = {};
+  rows.forEach(r => map[r.key] = r.value);
+  return map;
+}
+
+async function upsertSetting(key, value, label) {
+  const resp = await fetch(SUPABASE_URL + '/rest/v1/settings', {
+    method: 'POST',
+    headers: {
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+      'Content-Type': 'application/json',
+      'Content-Profile': SCHEMA,
+      'Accept-Profile': SCHEMA,
+      'Prefer': 'resolution=merge-duplicates',
+    },
+    body: JSON.stringify({ key, value, label, updated_at: new Date().toISOString() }),
+  });
+  if (!resp.ok) throw new Error('Failed to save: ' + resp.status);
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const openaiKey = document.getElementById('openaiKey');
+  const elevenlabsKey = document.getElementById('elevenlabsKey');
+  const openaiStatus = document.getElementById('openaiStatus');
+  const elevenlabsStatus = document.getElementById('elevenlabsStatus');
+  const btnSave = document.getElementById('btnSave');
+  const saveStatus = document.getElementById('saveStatus');
+
+  function showKeyStatus(el, hasKey) {
+    if (hasKey) {
+      el.innerHTML = '<span class="dot green"></span> Configured';
+      el.className = 'key-status configured';
+    } else {
+      el.innerHTML = '<span class="dot grey"></span> Not set';
+      el.className = 'key-status missing';
+    }
+  }
+
+  // Load existing keys
+  try {
+    const settings = await fetchSettings();
+    if (settings.openai_api_key) {
+      openaiKey.value = settings.openai_api_key;
+    }
+    if (settings.elevenlabs_api_key) {
+      elevenlabsKey.value = settings.elevenlabs_api_key;
+    }
+    showKeyStatus(openaiStatus, !!settings.openai_api_key);
+    showKeyStatus(elevenlabsStatus, !!settings.elevenlabs_api_key);
+  } catch {
+    showKeyStatus(openaiStatus, false);
+    showKeyStatus(elevenlabsStatus, false);
+  }
+
+  // Save
+  btnSave.addEventListener('click', async () => {
+    btnSave.disabled = true;
+    btnSave.innerHTML = '<span class="spinner-sm"></span> Saving...';
+    saveStatus.className = 'status-msg'; saveStatus.style.display = 'none';
+
+    try {
+      const promises = [];
+      if (openaiKey.value.trim()) {
+        promises.push(upsertSetting('openai_api_key', openaiKey.value.trim(), 'OpenAI API Key'));
+      }
+      if (elevenlabsKey.value.trim()) {
+        promises.push(upsertSetting('elevenlabs_api_key', elevenlabsKey.value.trim(), 'ElevenLabs API Key'));
+      }
+      await Promise.all(promises);
+
+      showKeyStatus(openaiStatus, !!openaiKey.value.trim());
+      showKeyStatus(elevenlabsStatus, !!elevenlabsKey.value.trim());
+
+      saveStatus.textContent = 'API keys saved successfully!';
+      saveStatus.className = 'status-msg success';
+      saveStatus.style.display = 'block';
+    } catch (err) {
+      saveStatus.textContent = 'Failed to save: ' + err.message;
+      saveStatus.className = 'status-msg error';
+      saveStatus.style.display = 'block';
+    } finally {
+      btnSave.disabled = false;
+      btnSave.textContent = 'Save API Keys';
+    }
+  });
+});
+</script>
+</body>
+</html>
