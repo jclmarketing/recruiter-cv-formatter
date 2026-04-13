@@ -1,0 +1,16 @@
+{
+  "name": "Joe & The Juice",
+  "tagline": "",
+  "website": "https://juicebox.ai/peoplegpt?utm_source=google&utm_medium=pmax&utm_campaign=pmax_prospecting&utm_content=&utm_term={searchterm}&hstk_creative=&hstk_campaign=23356914943&hstk_network=googleAds&gad_source=1&gad_campaignid=23347760397&gbraid=0AAAAAo-1_smAgBR6vN7BCKOYUJxcmYSpe&gclid=CjwKCAjwhe3OBhABEiwA6392zN4nps31qf3WrWuYSqjkvTsOk-UkDEbf6PSw-x-N55LdlZ6M0VmayBoCA5wQAvD_BwE",
+  "colours": {
+    "primary": "#007060",
+    "secondary": "#000000"
+  },
+  "fonts": [
+    "Roobert Medium",
+    "Roobert Medium Placeholder"
+  ],
+  "setupComplete": true,
+  "logoOpacity": 100,
+  "logoSize": 300
+}

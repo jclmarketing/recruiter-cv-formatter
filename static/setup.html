@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV Rebrander — Setup</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #232730;
+    --border: #2e3340;
+    --text: #e4e7ec;
+    --text-muted: #8b8fa3;
+    --accent: #6c5ce7;
+    --accent-light: #a29bfe;
+    --success: #00c853;
+    --success-bg: rgba(0,200,83,0.08);
+    --error: #ff5252;
+    --error-bg: rgba(255,82,82,0.08);
+    --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg); color: var(--text);
+    min-height: 100vh; line-height: 1.5;
+  }
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 32px; background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .topbar .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; }
+  .topbar .logo-icon {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-size: 16px; color: white;
+  }
+  .topbar .nav-links { display: flex; gap: 12px; }
+  .topbar .nav-links a {
+    color: var(--text-muted); text-decoration: none; font-size: 13px;
+    padding: 6px 14px; border-radius: 6px; border: 1px solid var(--border); transition: all 0.2s;
+  }
+  .topbar .nav-links a:hover { border-color: var(--accent); color: var(--text); }
+  .topbar .nav-links a.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+  .container { max-width: 780px; margin: 0 auto; padding: 24px 32px; }
+
+  .step-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; margin-top: 28px; }
+  .step-header:first-child { margin-top: 0; }
+  .step-number {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--accent); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+  }
+  .step-header h2 { font-size: 16px; font-weight: 700; }
+  .step-header .step-sub { font-size: 12px; color: var(--text-muted); margin-left: auto; }
+
+  .panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 20px; margin-bottom: 16px;
+  }
+
+  .form-group { margin-bottom: 16px; }
+  .form-group:last-child { margin-bottom: 0; }
+  .form-group label {
+    display: block; font-size: 12px; text-transform: uppercase;
+    letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600;
+  }
+  .form-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+  input[type="text"], input[type="url"], input[type="email"], input[type="tel"] {
+    width: 100%; padding: 10px 14px;
+    background: var(--surface2); color: var(--text);
+    border: 1px solid var(--border); border-radius: 8px;
+    font-size: 13px; font-family: inherit; outline: none; transition: border-color 0.2s;
+  }
+  input:focus { border-color: var(--accent); }
+
+  input[type="color"] {
+    width: 48px; height: 36px; border: 1px solid var(--border);
+    border-radius: 6px; background: var(--surface2); cursor: pointer; padding: 2px;
+  }
+
+  .colour-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .colour-label { font-size: 13px; width: 140px; color: var(--text-muted); }
+  .colour-hex {
+    font-size: 12px; color: var(--text-muted); font-family: monospace;
+    background: var(--surface2); padding: 4px 8px; border-radius: 4px;
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 20px; border-radius: 8px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    border: none; transition: all 0.2s; font-family: inherit;
+  }
+  .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: white; }
+  .btn-primary:hover { opacity: 0.9; }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+  .btn-secondary:hover { border-color: var(--accent); }
+  .btn-danger { background: var(--error-bg); color: var(--error); border: 1px solid rgba(255,82,82,0.3); }
+  .btn-full { width: 100%; justify-content: center; padding: 12px; font-size: 14px; }
+
+  .inline-row { display: flex; gap: 8px; }
+  .inline-row input { flex: 1; }
+
+  .logo-area {
+    margin-top: 10px; padding: 20px;
+    background: var(--bg); border: 2px dashed var(--border); border-radius: 10px;
+    text-align: center; cursor: pointer; transition: all 0.2s;
+    position: relative; min-height: 80px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  }
+  .logo-area:hover { border-color: var(--accent); background: rgba(108,92,231,0.03); }
+  .logo-area.has-logo { border-style: solid; border-color: var(--success); }
+  .logo-area input[type="file"] { display: none; }
+  .logo-area img { max-height: 80px; max-width: 300px; object-fit: contain; }
+
+  .slider-group { margin-top: 14px; }
+  .slider-group label { margin-bottom: 4px; }
+  .slider-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .slider-row input[type="range"] {
+    flex: 1; height: 6px; -webkit-appearance: none; appearance: none;
+    background: var(--surface2); border-radius: 3px; outline: none;
+    border: 1px solid var(--border);
+  }
+  .slider-row input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%;
+    background: var(--accent); cursor: pointer; border: 2px solid var(--bg);
+  }
+  .slider-label-left { font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+  .slider-label-right { font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+  .slider-value { font-size: 13px; font-family: monospace; color: var(--text-muted); min-width: 48px; text-align: right; }
+
+  /* Colour suggestions from logo */
+  .colour-suggestions { display: none; margin-top: 12px; }
+  .colour-suggestions.visible { display: block; }
+  .colour-suggestions label { margin-bottom: 6px; }
+  .swatch-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+  .swatch {
+    width: 36px; height: 36px; border-radius: 8px; cursor: pointer;
+    border: 2px solid transparent; transition: all 0.15s;
+    position: relative;
+  }
+  .swatch:hover { transform: scale(1.15); border-color: var(--text); }
+  .swatch.active { border-color: white; box-shadow: 0 0 0 2px var(--accent); }
+  .swatch-hex {
+    font-size: 10px; font-family: monospace; color: var(--text-muted);
+    text-align: center; margin-top: 2px;
+  }
+
+  /* Header preview */
+  .header-preview {
+    margin-top: 16px; background: white; border-radius: 8px; padding: 16px 20px;
+    color: #333;
+  }
+  .header-preview .hp-inner {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 8px;
+  }
+  .header-preview .hp-inner img { object-fit: contain; }
+  .header-preview .hp-recruiter { text-align: right; font-size: 9px; line-height: 1.5; }
+  .header-preview .hp-line { height: 2px; }
+  .logo-area .logo-hint { font-size: 12px; color: var(--text-muted); }
+
+  .recruiter-card {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 14px; margin-bottom: 10px;
+  }
+  .recruiter-card .rc-header {
+    display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
+  }
+  .recruiter-card .rc-name { font-weight: 600; font-size: 14px; }
+  .recruiter-card .rc-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .recruiter-card input { font-size: 12px; padding: 8px 10px; }
+
+  .cv-preview {
+    background: white; border-radius: 8px; padding: 20px; color: #333; min-height: 200px;
+  }
+  .cv-preview .cv-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 8px; margin-bottom: 12px;
+  }
+  .cv-preview .cv-header img { object-fit: contain; }
+  .cv-preview .cv-recruiter { text-align: right; font-size: 9px; line-height: 1.4; }
+  .cv-preview .cv-title { text-align: center; font-size: 16px; font-weight: bold; margin: 20px 0 10px; letter-spacing: 1px; }
+  .cv-preview .cv-divider { width: 120px; margin: 0 auto 16px; }
+  .cv-preview .cv-field { text-align: center; font-size: 11px; margin: 4px 0; }
+  .cv-preview .cv-field b { text-decoration: underline; }
+  .cv-preview .cv-section { font-size: 10px; font-weight: bold; margin-top: 14px; padding-bottom: 3px; margin-bottom: 6px; }
+  .cv-preview .cv-bullet { font-size: 9px; color: #555; margin: 2px 0 2px 14px; }
+  .cv-preview .cv-bullet::before { content: "• "; }
+
+  .status-msg {
+    padding: 10px 16px; border-radius: 8px; font-size: 13px; margin-top: 12px; display: none;
+  }
+  .status-msg.success { display: block; background: var(--success-bg); color: var(--success); border: 1px solid rgba(0,200,83,0.3); }
+  .status-msg.error { display: block; background: var(--error-bg); color: var(--error); border: 1px solid rgba(255,82,82,0.3); }
+
+  .spinner-sm {
+    display: inline-block; width: 14px; height: 14px;
+    border: 2px solid var(--border); border-top-color: var(--accent);
+    border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-icon">CV</div>
+    <span>CV Rebrander</span>
+  </div>
+  <div class="nav-links">
+    <a href="/">Generator</a>
+    <a href="/setup.html" class="active">Setup</a>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Step 1: Company Info -->
+  <div class="step-header">
+    <div class="step-number">1</div>
+    <h2>Company Details</h2>
+    <span class="step-sub">One-time setup</span>
+  </div>
+  <div class="panel">
+    <div class="form-group">
+      <label>Company Name</label>
+      <input type="text" id="companyName" placeholder="e.g. JCL Marketing">
+    </div>
+    <div class="form-group">
+      <label>Company Logo</label>
+      <div class="form-hint">PNG or JPG recommended. This logo appears in the header of every generated CV.</div>
+      <div class="logo-area" id="logoArea">
+        <input type="file" id="logoFile" accept="image/png,image/jpeg,image/jpg,image/webp">
+        <span class="logo-hint" id="logoHint">Click to upload company logo</span>
+      </div>
+
+      <div class="slider-group">
+        <label>Logo Size</label>
+        <div class="slider-row">
+          <span class="slider-label-left">Small</span>
+          <input type="range" id="logoSize" min="40" max="300" value="150" step="5">
+          <span class="slider-label-right">Large</span>
+          <span class="slider-value" id="sizeValue">150px</span>
+        </div>
+      </div>
+
+      <div class="slider-group">
+        <label>Logo Opacity</label>
+        <div class="slider-row">
+          <span class="slider-label-left">Watermark</span>
+          <input type="range" id="logoOpacity" min="10" max="100" value="100" step="5">
+          <span class="slider-label-right">Bold</span>
+          <span class="slider-value" id="opacityValue">100%</span>
+        </div>
+      </div>
+
+      <label style="display:block;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);margin-top:16px;margin-bottom:6px;font-weight:600;">Header Preview</label>
+      <div class="header-preview" id="headerPreview"></div>
+    </div>
+  </div>
+
+  <!-- Step 2: Brand Colours -->
+  <div class="step-header">
+    <div class="step-number">2</div>
+    <h2>Brand Colours</h2>
+    <span class="step-sub">Used in CV headings, borders, and accents</span>
+  </div>
+  <div class="panel">
+    <div class="colour-row">
+      <span class="colour-label">Primary (headings)</span>
+      <input type="color" id="colPrimary" value="#1B3A5C">
+      <span class="colour-hex" id="colPrimaryHex">#1B3A5C</span>
+    </div>
+    <div class="colour-row">
+      <span class="colour-label">Secondary (lines/accents)</span>
+      <input type="color" id="colSecondary" value="#2E86AB">
+      <span class="colour-hex" id="colSecondaryHex">#2E86AB</span>
+    </div>
+    <div class="form-hint">Primary is used for section headings, job titles, and cover page labels. Secondary is used for divider lines and borders.</div>
+
+    <div class="colour-suggestions" id="colourSuggestions">
+      <label>Colours from Logo</label>
+      <div class="form-hint" style="margin-top:0;margin-bottom:4px;">Click a colour to set it as the primary brand colour</div>
+      <div class="swatch-row" id="swatchRow"></div>
+    </div>
+  </div>
+
+  <!-- Step 3: Recruiters -->
+  <div class="step-header">
+    <div class="step-number">3</div>
+    <h2>Recruiters</h2>
+    <span class="step-sub">Name, email, and phone appear in the CV header</span>
+  </div>
+  <div class="panel">
+    <div id="recruiterList"></div>
+    <button type="button" id="btnAddRecruiter" class="btn btn-secondary" style="margin-top:8px;">+ Add Recruiter</button>
+  </div>
+
+  <!-- Step 4: Preview -->
+  <div class="step-header">
+    <div class="step-number">4</div>
+    <h2>Live Preview</h2>
+    <span class="step-sub">This is how your branded CVs will look</span>
+  </div>
+  <div class="panel">
+    <div class="cv-preview" id="cvPreview"></div>
+  </div>
+
+  <!-- Save -->
+  <button type="button" id="btnSave" class="btn btn-primary btn-full" style="margin-top:8px;">Save All Settings</button>
+  <div id="saveStatus" class="status-msg" style="margin-bottom:40px;"></div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const companyName = document.getElementById('companyName');
+  const logoFile = document.getElementById('logoFile');
+  const logoArea = document.getElementById('logoArea');
+  const logoHint = document.getElementById('logoHint');
+  const colPrimary = document.getElementById('colPrimary');
+  const colSecondary = document.getElementById('colSecondary');
+  const colPrimaryHex = document.getElementById('colPrimaryHex');
+  const colSecondaryHex = document.getElementById('colSecondaryHex');
+  const recruiterList = document.getElementById('recruiterList');
+  const btnAddRecruiter = document.getElementById('btnAddRecruiter');
+  const logoSize = document.getElementById('logoSize');
+  const sizeValue = document.getElementById('sizeValue');
+  const logoOpacity = document.getElementById('logoOpacity');
+  const opacityValue = document.getElementById('opacityValue');
+  const headerPreview = document.getElementById('headerPreview');
+  const colourSuggestions = document.getElementById('colourSuggestions');
+  const swatchRow = document.getElementById('swatchRow');
+  const btnSave = document.getElementById('btnSave');
+  const saveStatus = document.getElementById('saveStatus');
+  const cvPreview = document.getElementById('cvPreview');
+
+  let recruiters = [];
+
+  // Load existing config
+  Promise.all([
+    fetch('/api/company').then(r => r.json()),
+    fetch('/api/recruiters').then(r => r.json()),
+  ]).then(([company, recs]) => {
+    companyName.value = company.name || '';
+    if (company.colours) {
+      colPrimary.value = company.colours.primary || '#1B3A5C';
+      colSecondary.value = company.colours.secondary || '#2E86AB';
+      updateHexDisplays();
+    }
+    if (company.logoSize != null) {
+      logoSize.value = company.logoSize;
+      sizeValue.textContent = company.logoSize + 'px';
+    }
+    if (company.logoOpacity != null) {
+      logoOpacity.value = company.logoOpacity;
+      opacityValue.textContent = company.logoOpacity + '%';
+    }
+    recruiters = recs || [];
+    renderRecruiters();
+    loadLogo(); // calls updateHeaderPreview + updatePreview on image load
+  });
+
+  // Colour pickers
+  colPrimary.addEventListener('input', () => { updateHexDisplays(); updateHeaderPreview(); updatePreview(); });
+  colSecondary.addEventListener('input', () => { updateHexDisplays(); updateHeaderPreview(); updatePreview(); });
+
+  function updateHexDisplays() {
+    colPrimaryHex.textContent = colPrimary.value.toUpperCase();
+    colSecondaryHex.textContent = colSecondary.value.toUpperCase();
+  }
+
+  // Size slider
+  logoSize.addEventListener('input', () => {
+    sizeValue.textContent = logoSize.value + 'px';
+    updateHeaderPreview();
+    updatePreview();
+  });
+
+  // Opacity slider
+  logoOpacity.addEventListener('input', () => {
+    opacityValue.textContent = logoOpacity.value + '%';
+    updateHeaderPreview();
+    updatePreview();
+  });
+
+  // Logo upload
+  logoArea.addEventListener('click', () => logoFile.click());
+  logoFile.addEventListener('change', async () => {
+    if (!logoFile.files.length) return;
+    const fd = new FormData();
+    fd.append('logo', logoFile.files[0]);
+    try {
+      const resp = await fetch('/api/upload-logo', { method: 'POST', body: fd });
+      if (!resp.ok) throw new Error('Upload failed');
+      const data = await resp.json();
+      loadLogo();
+
+      // Auto-populate primary colour from logo
+      if (data.colours) {
+        colPrimary.value = data.colours.primary;
+        colSecondary.value = data.colours.secondary;
+        updateHexDisplays();
+      }
+
+      // Show colour suggestions from logo
+      if (data.brandColours && data.brandColours.length > 0) {
+        showSwatches(data.brandColours);
+      }
+      updateHeaderPreview();
+      updatePreview();
+    } catch (err) {
+      alert('Logo upload failed: ' + err.message);
+    }
+  });
+
+  function loadLogo() {
+    const img = new Image();
+    img.onload = () => {
+      logoArea.innerHTML = '';
+      logoArea.appendChild(img);
+      logoArea.appendChild(logoFile);
+      logoArea.classList.add('has-logo');
+      updateHeaderPreview();
+      updatePreview();
+    };
+    img.onerror = () => {
+      logoArea.classList.remove('has-logo');
+    };
+    img.src = '/api/logo?' + Date.now();
+    img.style.maxHeight = '80px'; img.style.maxWidth = '300px'; img.style.objectFit = 'contain';
+  }
+
+  // Header preview — real-time update as sliders move
+  function updateHeaderPreview() {
+    const primary = colPrimary.value;
+    const secondary = colSecondary.value;
+    const size = parseInt(logoSize.value);
+    const opacity = logoOpacity.value / 100;
+    const rec = recruiters[0] || { name: 'Recruiter Name', email: 'email@firm.com', phone: '+44 000 000' };
+    const logoImg = logoArea.querySelector('img');
+    const logoSrc = logoImg ? logoImg.src : '';
+
+    headerPreview.innerHTML = `
+      <div class="hp-inner">
+        ${logoSrc
+          ? `<img src="${logoSrc}" style="width:${size}px;opacity:${opacity};object-fit:contain;" />`
+          : `<div style="font-weight:bold;font-size:18px;color:${primary};">${companyName.value || 'LOGO'}</div>`}
+        <div class="hp-recruiter">
+          <b style="color:${primary};">${rec.name || 'Recruiter'}</b><br>
+          <span style="color:#555;">${rec.email || 'email@firm.com'}</span><br>
+          <span style="color:#555;">${rec.phone || '+44 000 000'}</span>
+        </div>
+      </div>
+      <div class="hp-line" style="background:${secondary};"></div>
+    `;
+  }
+
+  // Colour suggestions from logo
+  function showSwatches(colours) {
+    swatchRow.innerHTML = '';
+    colours.forEach((hex, i) => {
+      const wrapper = document.createElement('div');
+      wrapper.style.textAlign = 'center';
+
+      const swatch = document.createElement('div');
+      swatch.className = 'swatch' + (i === 0 ? ' active' : '');
+      swatch.style.background = hex;
+      swatch.title = hex;
+      swatch.addEventListener('click', () => {
+        // Set as primary colour
+        colPrimary.value = hex;
+        updateHexDisplays();
+        // Update active state
+        swatchRow.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+        swatch.classList.add('active');
+        updateHeaderPreview();
+        updatePreview();
+      });
+
+      const label = document.createElement('div');
+      label.className = 'swatch-hex';
+      label.textContent = hex;
+
+      wrapper.appendChild(swatch);
+      wrapper.appendChild(label);
+      swatchRow.appendChild(wrapper);
+    });
+    colourSuggestions.classList.add('visible');
+  }
+
+  // Recruiters
+  function renderRecruiters() {
+    recruiterList.innerHTML = '';
+    recruiters.forEach((rec, i) => {
+      const card = document.createElement('div');
+      card.className = 'recruiter-card';
+      card.innerHTML = `
+        <div class="rc-header">
+          <span class="rc-name">${rec.name || 'New Recruiter'}</span>
+          <button class="btn btn-danger" style="padding:4px 10px;font-size:11px;" onclick="removeRecruiter(${i})">Remove</button>
+        </div>
+        <div class="rc-fields">
+          <input type="text" placeholder="Full Name" value="${rec.name || ''}" onchange="updateRecruiter(${i},'name',this.value)">
+          <input type="email" placeholder="Email" value="${rec.email || ''}" onchange="updateRecruiter(${i},'email',this.value)">
+          <input type="tel" placeholder="Phone" value="${rec.phone || ''}" onchange="updateRecruiter(${i},'phone',this.value)">
+        </div>
+      `;
+      recruiterList.appendChild(card);
+    });
+  }
+
+  window.updateRecruiter = (i, field, value) => {
+    recruiters[i][field] = value;
+    if (field === 'name') {
+      recruiters[i].id = 'recruiter-' + value.toLowerCase().replace(/[^a-z0-9]/g, '-');
+      recruiterList.querySelectorAll('.recruiter-card')[i].querySelector('.rc-name').textContent = value;
+    }
+    updatePreview();
+  };
+
+  window.removeRecruiter = (i) => {
+    recruiters.splice(i, 1);
+    renderRecruiters();
+    updatePreview();
+  };
+
+  btnAddRecruiter.addEventListener('click', () => {
+    recruiters.push({ id: 'recruiter-' + Date.now(), name: '', email: '', phone: '' });
+    renderRecruiters();
+  });
+
+  // Live preview — updates in real time as you change colours
+  function updatePreview() {
+    const primary = colPrimary.value;
+    const secondary = colSecondary.value;
+    const rec = recruiters[0] || { name: 'Recruiter Name', email: 'email@firm.com', phone: '+44 000 000' };
+    const logoImg = logoArea.querySelector('img');
+    const logoSrc = logoImg ? logoImg.src : '';
+
+    const opacity = logoOpacity.value / 100;
+    const size = parseInt(logoSize.value);
+    cvPreview.innerHTML = `
+      <div class="cv-header" style="border-bottom: 2px solid ${secondary};">
+        ${logoSrc ? `<img src="${logoSrc}" style="width:${size}px;opacity:${opacity};object-fit:contain;" />` : `<div style="font-weight:bold;color:${primary};">${companyName.value || 'LOGO'}</div>`}
+        <div class="cv-recruiter">
+          <b style="color:${primary};">${rec.name || 'Recruiter'}</b><br>
+          <span style="color:#555;">${rec.email || 'email@firm.com'}</span><br>
+          <span style="color:#555;">${rec.phone || '+44 000 000'}</span>
+        </div>
+      </div>
+      <div class="cv-title" style="color:${primary};">CANDIDATE PROFILE</div>
+      <div class="cv-divider" style="border-bottom:2px solid ${secondary};"></div>
+      <div class="cv-field"><b style="color:${primary};">Candidate Name:</b> <b>John Smith</b></div>
+      <div class="cv-field"><b style="color:${primary};">Current Job Title:</b> <b>Senior Developer</b></div>
+      <div class="cv-field"><b style="color:${primary};">Location:</b> <b>London, UK</b></div>
+      <div class="cv-field"><b style="color:${primary};">Notice Period:</b> <b>1 Month</b></div>
+      <div class="cv-section" style="color:${primary}; border-bottom:1px solid ${secondary};">PROFESSIONAL EXPERIENCE</div>
+      <div style="font-size:10px;"><b style="color:${primary};">Senior Developer</b> <span style="color:#555;">| Acme Corp</span></div>
+      <div style="font-size:9px;color:#777;font-style:italic;">Jan 2021 — Present</div>
+      <div class="cv-bullet">Led a team of 8 engineers delivering a customer platform serving 50k users</div>
+      <div class="cv-bullet">Reduced deployment time by 60% by implementing CI/CD pipelines</div>
+      <div class="cv-section" style="color:${primary}; border-bottom:1px solid ${secondary};">KEY SKILLS</div>
+      <div style="font-size:9px;color:#555;">JavaScript | React | Node.js | AWS | CI/CD | Agile</div>
+    `;
+  }
+
+  // Save all
+  btnSave.addEventListener('click', async () => {
+    btnSave.disabled = true;
+    btnSave.innerHTML = '<span class="spinner-sm"></span> Saving...';
+    saveStatus.className = 'status-msg'; saveStatus.style.display = 'none';
+
+    try {
+      await fetch('/api/company', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: companyName.value.trim(),
+          colours: { primary: colPrimary.value, secondary: colSecondary.value },
+          logoSize: parseInt(logoSize.value),
+          logoOpacity: parseInt(logoOpacity.value),
+          setupComplete: true,
+        }),
+      });
+
+      const validRecruiters = recruiters.filter(r => r.name && r.name.trim());
+      validRecruiters.forEach((r, i) => { if (!r.id) r.id = 'recruiter-' + (i + 1); });
+      await fetch('/api/recruiters', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(validRecruiters),
+      });
+
+      showStatus(saveStatus, 'Settings saved! These will be used for every CV you generate.', 'success');
+    } catch (err) {
+      showStatus(saveStatus, 'Failed to save: ' + err.message, 'error');
+    } finally {
+      btnSave.disabled = false;
+      btnSave.textContent = 'Save All Settings';
+    }
+  });
+
+  function showStatus(el, msg, type) {
+    el.textContent = msg;
+    el.className = 'status-msg ' + type;
+    el.style.display = 'block';
+  }
+});
+</script>
+
+</body>
+</html>

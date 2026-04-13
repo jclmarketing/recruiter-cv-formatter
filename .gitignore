@@ -1,0 +1,9 @@
+node_modules/
+uploads/
+output/
+.env
+.claude/
+assets/logo*
+assets/README.txt
+data/
+*.log

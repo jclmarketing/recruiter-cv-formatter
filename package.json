@@ -1,0 +1,22 @@
+{
+  "name": "cv-rebrander",
+  "version": "1.0.0",
+  "description": "CV rebranding tool for recruitment firms",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "archiver": "^6.0.1",
+    "docx": "^8.5.0",
+    "dotenv": "^17.4.2",
+    "express": "^4.18.2",
+    "mammoth": "^1.6.0",
+    "multer": "^1.4.5-lts.1",
+    "openai": "^4.52.0",
+    "pdf-parse": "^1.1.1",
+    "puppeteer": "^22.6.0",
+    "tesseract.js": "^5.0.5",
+    "uuid": "^9.0.0"
+  }
+}

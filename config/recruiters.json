@@ -1,0 +1,26 @@
+[
+  {
+    "id": "recruiter-1",
+    "name": "Sarah Johnson",
+    "email": "sarah.johnson@recruitfirm.com",
+    "phone": "+44 7700 900123"
+  },
+  {
+    "id": "recruiter-2",
+    "name": "James Mitchell",
+    "email": "james.mitchell@recruitfirm.com",
+    "phone": "+44 7700 900456"
+  },
+  {
+    "id": "recruiter-3",
+    "name": "Emma Clarke",
+    "email": "emma.clarke@recruitfirm.com",
+    "phone": "+44 7700 900789"
+  },
+  {
+    "id": "recruiter-jake-whitehead",
+    "name": "Jake Whitehead",
+    "email": "jake.whitehead.business@gmail.com",
+    "phone": "07979076252"
+  }
+]
