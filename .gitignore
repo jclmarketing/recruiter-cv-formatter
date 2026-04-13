@@ -7,3 +7,4 @@ assets/logo*
 assets/README.txt
 data/
 *.log
+.vercel

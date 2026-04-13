@@ -107,9 +107,6 @@
   .btn-danger { background: var(--error-bg); color: var(--error); border: 1px solid rgba(255,82,82,0.3); }
   .btn-full { width: 100%; justify-content: center; padding: 12px; font-size: 14px; }
 
-  .inline-row { display: flex; gap: 8px; }
-  .inline-row input { flex: 1; }
-
   .logo-area {
     margin-top: 10px; padding: 20px;
     background: var(--bg); border: 2px dashed var(--border); border-radius: 10px;
@@ -138,7 +135,6 @@
   .slider-label-right { font-size: 11px; color: var(--text-muted); white-space: nowrap; }
   .slider-value { font-size: 13px; font-family: monospace; color: var(--text-muted); min-width: 48px; text-align: right; }
 
-  /* Colour suggestions from logo */
   .colour-suggestions { display: none; margin-top: 12px; }
   .colour-suggestions.visible { display: block; }
   .colour-suggestions label { margin-bottom: 6px; }
@@ -146,47 +142,26 @@
   .swatch {
     width: 36px; height: 36px; border-radius: 8px; cursor: pointer;
     border: 2px solid transparent; transition: all 0.15s;
-    position: relative;
   }
   .swatch:hover { transform: scale(1.15); border-color: var(--text); }
   .swatch.active { border-color: white; box-shadow: 0 0 0 2px var(--accent); }
-  .swatch-hex {
-    font-size: 10px; font-family: monospace; color: var(--text-muted);
-    text-align: center; margin-top: 2px;
-  }
+  .swatch-hex { font-size: 10px; font-family: monospace; color: var(--text-muted); text-align: center; margin-top: 2px; }
 
-  /* Header preview */
-  .header-preview {
-    margin-top: 16px; background: white; border-radius: 8px; padding: 16px 20px;
-    color: #333;
-  }
-  .header-preview .hp-inner {
-    display: flex; justify-content: space-between; align-items: center;
-    padding-bottom: 8px;
-  }
+  .header-preview { margin-top: 16px; background: white; border-radius: 8px; padding: 16px 20px; color: #333; }
+  .header-preview .hp-inner { display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; }
   .header-preview .hp-inner img { object-fit: contain; }
   .header-preview .hp-recruiter { text-align: right; font-size: 9px; line-height: 1.5; }
   .header-preview .hp-line { height: 2px; }
   .logo-area .logo-hint { font-size: 12px; color: var(--text-muted); }
 
-  .recruiter-card {
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 8px; padding: 14px; margin-bottom: 10px;
-  }
-  .recruiter-card .rc-header {
-    display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
-  }
+  .recruiter-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 10px; }
+  .recruiter-card .rc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
   .recruiter-card .rc-name { font-weight: 600; font-size: 14px; }
   .recruiter-card .rc-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .recruiter-card input { font-size: 12px; padding: 8px 10px; }
 
-  .cv-preview {
-    background: white; border-radius: 8px; padding: 20px; color: #333; min-height: 200px;
-  }
-  .cv-preview .cv-header {
-    display: flex; justify-content: space-between; align-items: center;
-    padding-bottom: 8px; margin-bottom: 12px;
-  }
+  .cv-preview { background: white; border-radius: 8px; padding: 20px; color: #333; min-height: 200px; }
+  .cv-preview .cv-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; margin-bottom: 12px; }
   .cv-preview .cv-header img { object-fit: contain; }
   .cv-preview .cv-recruiter { text-align: right; font-size: 9px; line-height: 1.4; }
   .cv-preview .cv-title { text-align: center; font-size: 16px; font-weight: bold; margin: 20px 0 10px; letter-spacing: 1px; }
@@ -195,11 +170,9 @@
   .cv-preview .cv-field b { text-decoration: underline; }
   .cv-preview .cv-section { font-size: 10px; font-weight: bold; margin-top: 14px; padding-bottom: 3px; margin-bottom: 6px; }
   .cv-preview .cv-bullet { font-size: 9px; color: #555; margin: 2px 0 2px 14px; }
-  .cv-preview .cv-bullet::before { content: "• "; }
+  .cv-preview .cv-bullet::before { content: "\2022 "; }
 
-  .status-msg {
-    padding: 10px 16px; border-radius: 8px; font-size: 13px; margin-top: 12px; display: none;
-  }
+  .status-msg { padding: 10px 16px; border-radius: 8px; font-size: 13px; margin-top: 12px; display: none; }
   .status-msg.success { display: block; background: var(--success-bg); color: var(--success); border: 1px solid rgba(0,200,83,0.3); }
   .status-msg.error { display: block; background: var(--error-bg); color: var(--error); border: 1px solid rgba(255,82,82,0.3); }
 
@@ -209,15 +182,15 @@
     border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
+
+  .scrape-row { display: flex; gap: 8px; margin-bottom: 12px; }
+  .scrape-row input { flex: 1; }
 </style>
 </head>
 <body>
 
 <div class="topbar">
-  <div class="logo">
-    <div class="logo-icon">CV</div>
-    <span>CV Rebrander</span>
-  </div>
+  <div class="logo"><div class="logo-icon">CV</div><span>CV Rebrander</span></div>
   <div class="nav-links">
     <a href="/">Generator</a>
     <a href="/setup.html" class="active">Setup</a>
@@ -226,11 +199,10 @@
 
 <div class="container">
 
-  <!-- Step 1: Company Info -->
   <div class="step-header">
     <div class="step-number">1</div>
     <h2>Company Details</h2>
-    <span class="step-sub">One-time setup</span>
+    <span class="step-sub">Saved in your browser</span>
   </div>
   <div class="panel">
     <div class="form-group">
@@ -239,7 +211,11 @@
     </div>
     <div class="form-group">
       <label>Company Logo</label>
-      <div class="form-hint">PNG or JPG recommended. This logo appears in the header of every generated CV.</div>
+      <div class="form-hint">PNG or JPG recommended. Or enter your website URL to auto-fetch.</div>
+      <div class="scrape-row">
+        <input type="url" id="websiteUrl" placeholder="https://yourcompany.com">
+        <button type="button" id="btnFetchLogo" class="btn btn-secondary">Fetch Logo</button>
+      </div>
       <div class="logo-area" id="logoArea">
         <input type="file" id="logoFile" accept="image/png,image/jpeg,image/jpg,image/webp">
         <span class="logo-hint" id="logoHint">Click to upload company logo</span>
@@ -254,7 +230,6 @@
           <span class="slider-value" id="sizeValue">150px</span>
         </div>
       </div>
-
       <div class="slider-group">
         <label>Logo Opacity</label>
         <div class="slider-row">
@@ -270,7 +245,6 @@
     </div>
   </div>
 
-  <!-- Step 2: Brand Colours -->
   <div class="step-header">
     <div class="step-number">2</div>
     <h2>Brand Colours</h2>
@@ -288,7 +262,6 @@
       <span class="colour-hex" id="colSecondaryHex">#2E86AB</span>
     </div>
     <div class="form-hint">Primary is used for section headings, job titles, and cover page labels. Secondary is used for divider lines and borders.</div>
-
     <div class="colour-suggestions" id="colourSuggestions">
       <label>Colours from Logo</label>
       <div class="form-hint" style="margin-top:0;margin-bottom:4px;">Click a colour to set it as the primary brand colour</div>
@@ -296,7 +269,6 @@
     </div>
   </div>
 
-  <!-- Step 3: Recruiters -->
   <div class="step-header">
     <div class="step-number">3</div>
     <h2>Recruiters</h2>
@@ -307,7 +279,6 @@
     <button type="button" id="btnAddRecruiter" class="btn btn-secondary" style="margin-top:8px;">+ Add Recruiter</button>
   </div>
 
-  <!-- Step 4: Preview -->
   <div class="step-header">
     <div class="step-number">4</div>
     <h2>Live Preview</h2>
@@ -317,7 +288,6 @@
     <div class="cv-preview" id="cvPreview"></div>
   </div>
 
-  <!-- Save -->
   <button type="button" id="btnSave" class="btn btn-primary btn-full" style="margin-top:8px;">Save All Settings</button>
   <div id="saveStatus" class="status-msg" style="margin-bottom:40px;"></div>
 
@@ -328,7 +298,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const companyName = document.getElementById('companyName');
   const logoFile = document.getElementById('logoFile');
   const logoArea = document.getElementById('logoArea');
-  const logoHint = document.getElementById('logoHint');
+  const websiteUrl = document.getElementById('websiteUrl');
+  const btnFetchLogo = document.getElementById('btnFetchLogo');
   const colPrimary = document.getElementById('colPrimary');
   const colSecondary = document.getElementById('colSecondary');
   const colPrimaryHex = document.getElementById('colPrimaryHex');
@@ -347,154 +318,188 @@ document.addEventListener('DOMContentLoaded', () => {
   const cvPreview = document.getElementById('cvPreview');
 
   let recruiters = [];
+  let logoDataUrl = null;
 
-  // Load existing config
-  Promise.all([
-    fetch('/api/company').then(r => r.json()),
-    fetch('/api/recruiters').then(r => r.json()),
-  ]).then(([company, recs]) => {
-    companyName.value = company.name || '';
-    if (company.colours) {
-      colPrimary.value = company.colours.primary || '#1B3A5C';
-      colSecondary.value = company.colours.secondary || '#2E86AB';
-      updateHexDisplays();
-    }
-    if (company.logoSize != null) {
-      logoSize.value = company.logoSize;
-      sizeValue.textContent = company.logoSize + 'px';
-    }
-    if (company.logoOpacity != null) {
-      logoOpacity.value = company.logoOpacity;
-      opacityValue.textContent = company.logoOpacity + '%';
-    }
-    recruiters = recs || [];
-    renderRecruiters();
-    loadLogo(); // calls updateHeaderPreview + updatePreview on image load
-  });
+  // Load saved config
+  const savedCompany = JSON.parse(localStorage.getItem('cvr_company') || '{}');
+  const savedRecruiters = JSON.parse(localStorage.getItem('cvr_recruiters') || '[]');
+  const savedLogo = localStorage.getItem('cvr_logo');
+
+  companyName.value = savedCompany.name || '';
+  if (savedCompany.colours) {
+    colPrimary.value = savedCompany.colours.primary || '#1B3A5C';
+    colSecondary.value = savedCompany.colours.secondary || '#2E86AB';
+  }
+  if (savedCompany.logoSize != null) { logoSize.value = savedCompany.logoSize; sizeValue.textContent = savedCompany.logoSize + 'px'; }
+  if (savedCompany.logoOpacity != null) { logoOpacity.value = savedCompany.logoOpacity; opacityValue.textContent = savedCompany.logoOpacity + '%'; }
+  updateHexDisplays();
+  recruiters = savedRecruiters.length ? savedRecruiters : [];
+  renderRecruiters();
+  if (savedLogo) { logoDataUrl = savedLogo; showLogoPreview(savedLogo); }
+  updateHeaderPreview(); updatePreview();
 
   // Colour pickers
   colPrimary.addEventListener('input', () => { updateHexDisplays(); updateHeaderPreview(); updatePreview(); });
   colSecondary.addEventListener('input', () => { updateHexDisplays(); updateHeaderPreview(); updatePreview(); });
+  function updateHexDisplays() { colPrimaryHex.textContent = colPrimary.value.toUpperCase(); colSecondaryHex.textContent = colSecondary.value.toUpperCase(); }
 
-  function updateHexDisplays() {
-    colPrimaryHex.textContent = colPrimary.value.toUpperCase();
-    colSecondaryHex.textContent = colSecondary.value.toUpperCase();
-  }
+  // Sliders
+  logoSize.addEventListener('input', () => { sizeValue.textContent = logoSize.value + 'px'; updateHeaderPreview(); updatePreview(); });
+  logoOpacity.addEventListener('input', () => { opacityValue.textContent = logoOpacity.value + '%'; updateHeaderPreview(); updatePreview(); });
 
-  // Size slider
-  logoSize.addEventListener('input', () => {
-    sizeValue.textContent = logoSize.value + 'px';
-    updateHeaderPreview();
-    updatePreview();
-  });
-
-  // Opacity slider
-  logoOpacity.addEventListener('input', () => {
-    opacityValue.textContent = logoOpacity.value + '%';
-    updateHeaderPreview();
-    updatePreview();
-  });
-
-  // Logo upload
+  // Logo upload — client-side processing
   logoArea.addEventListener('click', () => logoFile.click());
-  logoFile.addEventListener('change', async () => {
+  logoFile.addEventListener('change', () => {
     if (!logoFile.files.length) return;
-    const fd = new FormData();
-    fd.append('logo', logoFile.files[0]);
+    const reader = new FileReader();
+    reader.onload = (e) => processLogoImage(e.target.result);
+    reader.readAsDataURL(logoFile.files[0]);
+  });
+
+  // Fetch logo from website
+  btnFetchLogo.addEventListener('click', async () => {
+    const url = websiteUrl.value.trim();
+    if (!url) return;
+    btnFetchLogo.disabled = true;
+    btnFetchLogo.innerHTML = '<span class="spinner-sm"></span>';
     try {
-      const resp = await fetch('/api/upload-logo', { method: 'POST', body: fd });
-      if (!resp.ok) throw new Error('Upload failed');
+      const resp = await fetch('/api/scrape-brand', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url }),
+      });
       const data = await resp.json();
-      loadLogo();
-
-      // Auto-populate primary colour from logo
-      if (data.colours) {
-        colPrimary.value = data.colours.primary;
-        colSecondary.value = data.colours.secondary;
-        updateHexDisplays();
+      const sources = [data.logoUrl, data.logoUrlHD, data.faviconUrl].filter(Boolean);
+      let loaded = false;
+      for (const src of sources) {
+        try {
+          const dataUrl = await fetchImageAsDataUrl(src);
+          if (dataUrl) { processLogoImage(dataUrl); loaded = true; break; }
+        } catch {}
       }
-
-      // Show colour suggestions from logo
-      if (data.brandColours && data.brandColours.length > 0) {
-        showSwatches(data.brandColours);
-      }
-      updateHeaderPreview();
-      updatePreview();
+      if (!loaded) alert('Could not fetch a logo for that domain.');
     } catch (err) {
-      alert('Logo upload failed: ' + err.message);
+      alert('Failed to fetch logo: ' + err.message);
+    } finally {
+      btnFetchLogo.disabled = false;
+      btnFetchLogo.textContent = 'Fetch Logo';
     }
   });
 
-  function loadLogo() {
+  function fetchImageAsDataUrl(url) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        const c = document.createElement('canvas'); c.width = img.width; c.height = img.height;
+        c.getContext('2d').drawImage(img, 0, 0);
+        resolve(c.toDataURL('image/png'));
+      };
+      img.onerror = () => resolve(null);
+      img.src = url;
+    });
+  }
+
+  // Client-side logo processing: remove white bg + extract brand colours
+  function processLogoImage(dataUrl) {
     const img = new Image();
     img.onload = () => {
-      logoArea.innerHTML = '';
-      logoArea.appendChild(img);
-      logoArea.appendChild(logoFile);
-      logoArea.classList.add('has-logo');
-      updateHeaderPreview();
-      updatePreview();
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width; canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+
+      // Remove white/near-white background
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i], g = data[i+1], b = data[i+2];
+        const brightness = (r + g + b) / 3;
+        const sat = Math.max(r, g, b) - Math.min(r, g, b);
+        if (brightness > 230 && sat < 30) data[i+3] = 0;
+      }
+      ctx.putImageData(imageData, 0, 0);
+      const cleanedDataUrl = canvas.toDataURL('image/png');
+
+      // Extract brand colours
+      const counts = {};
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i], g = data[i+1], b = data[i+2], a = data[i+3];
+        if (a < 128) continue;
+        const brightness = (r + g + b) / 3;
+        if (brightness > 220 || brightness < 20) continue;
+        if (Math.max(r, g, b) - Math.min(r, g, b) < 35) continue;
+        const qr = Math.round(r / 16) * 16, qg = Math.round(g / 16) * 16, qb = Math.round(b / 16) * 16;
+        const key = qr + ',' + qg + ',' + qb;
+        counts[key] = (counts[key] || 0) + 1;
+      }
+      const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+      const distinct = [];
+      for (const [key] of sorted) {
+        if (distinct.length >= 6) break;
+        const [r, g, b] = key.split(',').map(Number);
+        let tooSimilar = false;
+        for (const ex of distinct) {
+          if (Math.abs(r - ex.r) + Math.abs(g - ex.g) + Math.abs(b - ex.b) < 80) { tooSimilar = true; break; }
+        }
+        if (tooSimilar) continue;
+        const hex = '#' + [r, g, b].map(c => Math.min(255, Math.max(0, c)).toString(16).padStart(2, '0')).join('').toUpperCase();
+        distinct.push({ r, g, b, hex });
+      }
+
+      logoDataUrl = cleanedDataUrl;
+      showLogoPreview(cleanedDataUrl);
+      if (distinct.length > 0) {
+        colPrimary.value = distinct[0].hex;
+        updateHexDisplays();
+        showSwatches(distinct.map(d => d.hex));
+      }
+      updateHeaderPreview(); updatePreview();
     };
-    img.onerror = () => {
-      logoArea.classList.remove('has-logo');
-    };
-    img.src = '/api/logo?' + Date.now();
-    img.style.maxHeight = '80px'; img.style.maxWidth = '300px'; img.style.objectFit = 'contain';
+    img.src = dataUrl;
   }
 
-  // Header preview — real-time update as sliders move
+  function showLogoPreview(dataUrl) {
+    const img = document.createElement('img');
+    img.src = dataUrl; img.style.maxHeight = '80px'; img.style.maxWidth = '300px'; img.style.objectFit = 'contain';
+    logoArea.innerHTML = '';
+    logoArea.appendChild(img);
+    logoArea.appendChild(logoFile);
+    logoArea.classList.add('has-logo');
+  }
+
   function updateHeaderPreview() {
-    const primary = colPrimary.value;
-    const secondary = colSecondary.value;
-    const size = parseInt(logoSize.value);
-    const opacity = logoOpacity.value / 100;
+    const primary = colPrimary.value, secondary = colSecondary.value;
+    const size = parseInt(logoSize.value), opacity = logoOpacity.value / 100;
     const rec = recruiters[0] || { name: 'Recruiter Name', email: 'email@firm.com', phone: '+44 000 000' };
-    const logoImg = logoArea.querySelector('img');
-    const logoSrc = logoImg ? logoImg.src : '';
-
-    headerPreview.innerHTML = `
-      <div class="hp-inner">
-        ${logoSrc
-          ? `<img src="${logoSrc}" style="width:${size}px;opacity:${opacity};object-fit:contain;" />`
-          : `<div style="font-weight:bold;font-size:18px;color:${primary};">${companyName.value || 'LOGO'}</div>`}
-        <div class="hp-recruiter">
-          <b style="color:${primary};">${rec.name || 'Recruiter'}</b><br>
-          <span style="color:#555;">${rec.email || 'email@firm.com'}</span><br>
-          <span style="color:#555;">${rec.phone || '+44 000 000'}</span>
-        </div>
-      </div>
-      <div class="hp-line" style="background:${secondary};"></div>
-    `;
+    headerPreview.innerHTML =
+      '<div class="hp-inner">' +
+        (logoDataUrl
+          ? '<img src="' + logoDataUrl + '" style="width:' + size + 'px;opacity:' + opacity + ';object-fit:contain;" />'
+          : '<div style="font-weight:bold;font-size:18px;color:' + primary + ';">' + (companyName.value || 'LOGO') + '</div>') +
+        '<div class="hp-recruiter">' +
+          '<b style="color:' + primary + ';">' + (rec.name || 'Recruiter') + '</b><br>' +
+          '<span style="color:#555;">' + (rec.email || 'email@firm.com') + '</span><br>' +
+          '<span style="color:#555;">' + (rec.phone || '+44 000 000') + '</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="hp-line" style="background:' + secondary + ';"></div>';
   }
 
-  // Colour suggestions from logo
   function showSwatches(colours) {
     swatchRow.innerHTML = '';
     colours.forEach((hex, i) => {
-      const wrapper = document.createElement('div');
-      wrapper.style.textAlign = 'center';
-
+      const wrapper = document.createElement('div'); wrapper.style.textAlign = 'center';
       const swatch = document.createElement('div');
       swatch.className = 'swatch' + (i === 0 ? ' active' : '');
-      swatch.style.background = hex;
-      swatch.title = hex;
+      swatch.style.background = hex; swatch.title = hex;
       swatch.addEventListener('click', () => {
-        // Set as primary colour
-        colPrimary.value = hex;
-        updateHexDisplays();
-        // Update active state
+        colPrimary.value = hex; updateHexDisplays();
         swatchRow.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
         swatch.classList.add('active');
-        updateHeaderPreview();
-        updatePreview();
+        updateHeaderPreview(); updatePreview();
       });
-
-      const label = document.createElement('div');
-      label.className = 'swatch-hex';
-      label.textContent = hex;
-
-      wrapper.appendChild(swatch);
-      wrapper.appendChild(label);
+      const label = document.createElement('div'); label.className = 'swatch-hex'; label.textContent = hex;
+      wrapper.appendChild(swatch); wrapper.appendChild(label);
       swatchRow.appendChild(wrapper);
     });
     colourSuggestions.classList.add('visible');
@@ -504,19 +509,15 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderRecruiters() {
     recruiterList.innerHTML = '';
     recruiters.forEach((rec, i) => {
-      const card = document.createElement('div');
-      card.className = 'recruiter-card';
-      card.innerHTML = `
-        <div class="rc-header">
-          <span class="rc-name">${rec.name || 'New Recruiter'}</span>
-          <button class="btn btn-danger" style="padding:4px 10px;font-size:11px;" onclick="removeRecruiter(${i})">Remove</button>
-        </div>
-        <div class="rc-fields">
-          <input type="text" placeholder="Full Name" value="${rec.name || ''}" onchange="updateRecruiter(${i},'name',this.value)">
-          <input type="email" placeholder="Email" value="${rec.email || ''}" onchange="updateRecruiter(${i},'email',this.value)">
-          <input type="tel" placeholder="Phone" value="${rec.phone || ''}" onchange="updateRecruiter(${i},'phone',this.value)">
-        </div>
-      `;
+      const card = document.createElement('div'); card.className = 'recruiter-card';
+      card.innerHTML =
+        '<div class="rc-header"><span class="rc-name">' + (rec.name || 'New Recruiter') + '</span>' +
+        '<button class="btn btn-danger" style="padding:4px 10px;font-size:11px;" onclick="removeRecruiter(' + i + ')">Remove</button></div>' +
+        '<div class="rc-fields">' +
+        '<input type="text" placeholder="Full Name" value="' + (rec.name || '') + '" onchange="updateRecruiter(' + i + ',\'name\',this.value)">' +
+        '<input type="email" placeholder="Email" value="' + (rec.email || '') + '" onchange="updateRecruiter(' + i + ',\'email\',this.value)">' +
+        '<input type="tel" placeholder="Phone" value="' + (rec.phone || '') + '" onchange="updateRecruiter(' + i + ',\'phone\',this.value)">' +
+        '</div>';
       recruiterList.appendChild(card);
     });
   }
@@ -529,94 +530,64 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     updatePreview();
   };
-
-  window.removeRecruiter = (i) => {
-    recruiters.splice(i, 1);
-    renderRecruiters();
-    updatePreview();
-  };
-
+  window.removeRecruiter = (i) => { recruiters.splice(i, 1); renderRecruiters(); updatePreview(); };
   btnAddRecruiter.addEventListener('click', () => {
     recruiters.push({ id: 'recruiter-' + Date.now(), name: '', email: '', phone: '' });
     renderRecruiters();
   });
 
-  // Live preview — updates in real time as you change colours
+  // Live preview
   function updatePreview() {
-    const primary = colPrimary.value;
-    const secondary = colSecondary.value;
+    const primary = colPrimary.value, secondary = colSecondary.value;
     const rec = recruiters[0] || { name: 'Recruiter Name', email: 'email@firm.com', phone: '+44 000 000' };
-    const logoImg = logoArea.querySelector('img');
-    const logoSrc = logoImg ? logoImg.src : '';
-
-    const opacity = logoOpacity.value / 100;
-    const size = parseInt(logoSize.value);
-    cvPreview.innerHTML = `
-      <div class="cv-header" style="border-bottom: 2px solid ${secondary};">
-        ${logoSrc ? `<img src="${logoSrc}" style="width:${size}px;opacity:${opacity};object-fit:contain;" />` : `<div style="font-weight:bold;color:${primary};">${companyName.value || 'LOGO'}</div>`}
-        <div class="cv-recruiter">
-          <b style="color:${primary};">${rec.name || 'Recruiter'}</b><br>
-          <span style="color:#555;">${rec.email || 'email@firm.com'}</span><br>
-          <span style="color:#555;">${rec.phone || '+44 000 000'}</span>
-        </div>
-      </div>
-      <div class="cv-title" style="color:${primary};">CANDIDATE PROFILE</div>
-      <div class="cv-divider" style="border-bottom:2px solid ${secondary};"></div>
-      <div class="cv-field"><b style="color:${primary};">Candidate Name:</b> <b>John Smith</b></div>
-      <div class="cv-field"><b style="color:${primary};">Current Job Title:</b> <b>Senior Developer</b></div>
-      <div class="cv-field"><b style="color:${primary};">Location:</b> <b>London, UK</b></div>
-      <div class="cv-field"><b style="color:${primary};">Notice Period:</b> <b>1 Month</b></div>
-      <div class="cv-section" style="color:${primary}; border-bottom:1px solid ${secondary};">PROFESSIONAL EXPERIENCE</div>
-      <div style="font-size:10px;"><b style="color:${primary};">Senior Developer</b> <span style="color:#555;">| Acme Corp</span></div>
-      <div style="font-size:9px;color:#777;font-style:italic;">Jan 2021 — Present</div>
-      <div class="cv-bullet">Led a team of 8 engineers delivering a customer platform serving 50k users</div>
-      <div class="cv-bullet">Reduced deployment time by 60% by implementing CI/CD pipelines</div>
-      <div class="cv-section" style="color:${primary}; border-bottom:1px solid ${secondary};">KEY SKILLS</div>
-      <div style="font-size:9px;color:#555;">JavaScript | React | Node.js | AWS | CI/CD | Agile</div>
-    `;
+    const opacity = logoOpacity.value / 100, size = parseInt(logoSize.value);
+    cvPreview.innerHTML =
+      '<div class="cv-header" style="border-bottom:2px solid ' + secondary + ';">' +
+        (logoDataUrl ? '<img src="' + logoDataUrl + '" style="width:' + size + 'px;opacity:' + opacity + ';object-fit:contain;" />' : '<div style="font-weight:bold;color:' + primary + ';">' + (companyName.value || 'LOGO') + '</div>') +
+        '<div class="cv-recruiter"><b style="color:' + primary + ';">' + (rec.name || 'Recruiter') + '</b><br><span style="color:#555;">' + (rec.email || 'email@firm.com') + '</span><br><span style="color:#555;">' + (rec.phone || '+44 000 000') + '</span></div>' +
+      '</div>' +
+      '<div class="cv-title" style="color:' + primary + ';">CANDIDATE PROFILE</div>' +
+      '<div class="cv-divider" style="border-bottom:2px solid ' + secondary + ';"></div>' +
+      '<div class="cv-field"><b style="color:' + primary + ';">Candidate Name:</b> <b>John Smith</b></div>' +
+      '<div class="cv-field"><b style="color:' + primary + ';">Current Job Title:</b> <b>Senior Developer</b></div>' +
+      '<div class="cv-field"><b style="color:' + primary + ';">Location:</b> <b>London, UK</b></div>' +
+      '<div class="cv-field"><b style="color:' + primary + ';">Notice Period:</b> <b>1 Month</b></div>' +
+      '<div class="cv-section" style="color:' + primary + ';border-bottom:1px solid ' + secondary + ';">PROFESSIONAL EXPERIENCE</div>' +
+      '<div style="font-size:10px;"><b style="color:' + primary + ';">Senior Developer</b> <span style="color:#555;">| Acme Corp</span></div>' +
+      '<div style="font-size:9px;color:#777;font-style:italic;">Jan 2021 - Present</div>' +
+      '<div class="cv-bullet">Led a team of 8 engineers delivering a customer platform serving 50k users</div>' +
+      '<div class="cv-bullet">Reduced deployment time by 60% by implementing CI/CD pipelines</div>' +
+      '<div class="cv-section" style="color:' + primary + ';border-bottom:1px solid ' + secondary + ';">KEY SKILLS</div>' +
+      '<div style="font-size:9px;color:#555;">JavaScript | React | Node.js | AWS | CI/CD | Agile</div>';
   }
 
-  // Save all
-  btnSave.addEventListener('click', async () => {
+  // Save to localStorage
+  btnSave.addEventListener('click', () => {
     btnSave.disabled = true;
     btnSave.innerHTML = '<span class="spinner-sm"></span> Saving...';
     saveStatus.className = 'status-msg'; saveStatus.style.display = 'none';
-
     try {
-      await fetch('/api/company', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: companyName.value.trim(),
-          colours: { primary: colPrimary.value, secondary: colSecondary.value },
-          logoSize: parseInt(logoSize.value),
-          logoOpacity: parseInt(logoOpacity.value),
-          setupComplete: true,
-        }),
-      });
-
-      const validRecruiters = recruiters.filter(r => r.name && r.name.trim());
-      validRecruiters.forEach((r, i) => { if (!r.id) r.id = 'recruiter-' + (i + 1); });
-      await fetch('/api/recruiters', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(validRecruiters),
-      });
-
-      showStatus(saveStatus, 'Settings saved! These will be used for every CV you generate.', 'success');
+      localStorage.setItem('cvr_company', JSON.stringify({
+        name: companyName.value.trim(),
+        colours: { primary: colPrimary.value, secondary: colSecondary.value },
+        logoSize: parseInt(logoSize.value),
+        logoOpacity: parseInt(logoOpacity.value),
+        setupComplete: true,
+      }));
+      const valid = recruiters.filter(r => r.name && r.name.trim());
+      valid.forEach((r, i) => { if (!r.id) r.id = 'recruiter-' + (i + 1); });
+      localStorage.setItem('cvr_recruiters', JSON.stringify(valid));
+      if (logoDataUrl) localStorage.setItem('cvr_logo', logoDataUrl);
+      showStatus(saveStatus, 'Settings saved to your browser! These will be used for every CV you generate.', 'success');
     } catch (err) {
       showStatus(saveStatus, 'Failed to save: ' + err.message, 'error');
     } finally {
-      btnSave.disabled = false;
-      btnSave.textContent = 'Save All Settings';
+      btnSave.disabled = false; btnSave.textContent = 'Save All Settings';
     }
   });
 
-  function showStatus(el, msg, type) {
-    el.textContent = msg;
-    el.className = 'status-msg ' + type;
-    el.style.display = 'block';
-  }
+  function showStatus(el, msg, type) { el.textContent = msg; el.className = 'status-msg ' + type; el.style.display = 'block'; }
 });
 </script>
-
 </body>
 </html>
